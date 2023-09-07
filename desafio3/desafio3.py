@@ -5,10 +5,9 @@ app = Flask(__name__)
 pessoas = []
 
 class Pessoa:
-    def __init__(self, nome,descricao, cpf,programa,animador,imagem):
+    def __init__(self, nome,descricao,programa,animador,imagem):
         self.nome = nome
         self.descricao = descricao
-        self.cpf = cpf
         self.programa = programa
         self.animador = animador
         self.imagem = imagem
@@ -19,12 +18,11 @@ def criar_pessoa():
     data = request.get_json()
     nome = data.get('nome')
     descricao = data.get('descricao')
-    cpf = data.get('cpf')
     programa = data.get('programa')
     animador = data.get('animador')
     imagem = data.get('imagem')
 
-    nova_pessoa = Pessoa(nome,descricao, cpf,programa,animador,imagem)
+    nova_pessoa = Pessoa(nome,descricao,programa,animador,imagem)
     pessoas.append(nova_pessoa)    
 
     return jsonify({'message': 'Pessoa criada com sucesso'}), 201
@@ -32,7 +30,7 @@ def criar_pessoa():
 
 @app.route("/characters/")
 def listar_pessoas():
-    pessoas_data = [{'nome': pessoa.nome, 'descricao': pessoa.descricao, 'cpf': pessoa.cpf,'programa':pessoa.programa,'animador':pessoa.animador,'imagem':pessoa.imagem} for pessoa in pessoas]
+    pessoas_data = [{'nome': pessoa.nome, 'descricao': pessoa.descricao,'programa':pessoa.programa,'animador':pessoa.animador,'imagem':pessoa.imagem} for pessoa in pessoas]
     return jsonify(pessoas_data)
 
 
