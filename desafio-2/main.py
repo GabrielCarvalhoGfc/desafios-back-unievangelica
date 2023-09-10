@@ -1,4 +1,4 @@
-class Pessoa:
+class Characters:
     def __init__(self, nome,descricao,programa,animador,imagem):
         self.nome = nome
         self.descricao = descricao
@@ -7,5 +7,5 @@ class Pessoa:
         self.imagem = imagem
 
 if __name__ == "__main__":
-    pessoa1= Pessoa("GABRIEL","MASCULINO","FILME,DISNEY,imagem")
-    print(pessoa1.nome,pessoa1.descricao,pessoa1.programa,pessoa1.animador,pessoa1.imagem)
+    Characters1= Characters("GABRIEL","MASCULINO","FILME,DISNEY,imagem")
+    print(pessoa1.nome,Characters1.descricao,Characters1.program,Characters1.animador,Characters1.imagem)
