@@ -1,3 +1,4 @@
+#IMPORTAÇAO
 from flask import Flask,jsonify, request
 from flask_restx import Resource, Api, fields
 from flask_sqlalchemy import SQLAlchemy
@@ -5,12 +6,12 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 api = Api(app, version="1.0", title="API",
     description="A simple CRUD API ")
-
+#CONFIGURAÇAO DE BANCO DE DADOS
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///bancodados.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy()
-
+#CRIACAO DO PERSONAGEM
 class Characters(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(50), nullable=False)
@@ -30,7 +31,7 @@ db.init_app(app)
 
 with app.app_context():
     db.create_all()
-
+#MODELO DO PERSONAGEM PARA O BANCO
 character_model = api.model("Character", {
     "nome": fields.String(required=True, description="The character name"),
     "descricao": fields.String(required=True, description="The character description"),
@@ -38,7 +39,7 @@ character_model = api.model("Character", {
     "programa": fields.String(required=True, description="The character show"),
     "animador": fields.String(required=True, description="The character creator")
 })
-
+#FUNCOES DE CRIAÇAO DO PESSONAGEM
 @api.route("/characters")
 class GpCharacter(Resource):
     @api.expect(character_model)
@@ -64,7 +65,7 @@ class GpCharacter(Resource):
             character_data["animador"] = character.animador
             output.append(character_data)
         return jsonify({"characters": output})
-
+#FUNCAO PARA GET
 @api.route("/characters/<int:id>")
 class CharactersById (Resource):
     @api.doc(params={"id": "The character ID"})
@@ -82,7 +83,7 @@ class CharactersById (Resource):
             "animador": character.animador
         }
         return jsonify(character_data)
-
+#FUNCAO PARA UPDATE DO PERSONAGEM
     @api.doc(params={"id": "ID of the character"})
     @api.expect(character_model)
     def put(self, id):
@@ -103,7 +104,7 @@ class CharactersById (Resource):
             character.animador = data["animador"]
         db.session.commit()
         return {"msg": "Character updated successfully"}
-
+#FUNÇOES DE DELETAR O PERSONAGEM
     @api.doc(params={"id": "ID of the character"})
     def delete(self, id):
         #Delete a character by ID
@@ -114,5 +115,6 @@ class CharactersById (Resource):
         db.session.commit()
         return {"msg": "Character deleted successfully"}
         
+#FUNÇAO DE EXECUTAR O PROGRAMA
 if __name__ == "__main__":
     app.run(debug = True)
